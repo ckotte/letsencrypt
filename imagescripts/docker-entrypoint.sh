@@ -58,16 +58,6 @@ if [ -n "${LETSENCRYPT_ACCOUNT_ID}" ]; then
   letsencrypt_account_id="--account "${LETSENCRYPT_ACCOUNT_ID}
 fi
 
-protocoll_command=""
-
-if  [ "${letsencrypt_http_enabled}" = "false" ]; then
-  protocoll_command="--standalone-supported-challenges tls-sni-01"
-fi
-
-if  [ "${letsencrypt_https_enabled}" = "false" ]; then
-  protocoll_command="--standalone-supported-challenges http-01"
-fi
-
 letsencrypt_debug=""
 
 if  [ "${LETSENCRYPT_DEBUG}" = "true" ]; then
@@ -111,7 +101,7 @@ fi
 if [ "$1" = 'jobberd' ]; then
   cat >> ${jobber_configfile} <<_EOF_
 - name: letsencryt_renewal
-  cmd: bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${protocoll_command} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
+  cmd: bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
   time: ${job_time}
   onError: ${job_on_error}
   notifyOnError: false
@@ -125,15 +115,15 @@ fi
 case "$1" in
 
   install)
-    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${protocoll_command} ${letsencrypt_testcert} ${letsencrypt_debug} --email ${letsencrypt_email} --agree-tos ${letsencrypt_domains} ${@:2}"
+    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --email ${letsencrypt_email} --agree-tos ${letsencrypt_domains} ${@:2}"
     ;;
 
   newcert)
-    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${protocoll_command} ${letsencrypt_testcert} ${letsencrypt_debug} ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
+    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
     ;;
 
   renewal)
-    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${protocoll_command} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
+    bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
     ;;
 
   *)
