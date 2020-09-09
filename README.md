@@ -4,7 +4,7 @@ Docker Image wrapping Certbot client to automate the tasks of obtaining Let's En
 
 > Until May 2016, Certbot was named simply letsencrypt or letsencrypt-auto, depending on install method. Instructions on the Internet, and some pieces of the software, may still refer to this older name.
 
-Perfectly working with this reverse proxy: [blacklabelops/nginx](https://github.com/blacklabelops/nginx)
+Perfectly working with this reverse proxy: [ckotte/nginx](https://github.com/ckotte/nginx)
 
 Features:
 
@@ -29,7 +29,7 @@ $ docker run --rm \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
-    blacklabelops/letsencrypt install
+    ckotte/letsencrypt install
 ~~~~
 
 > Will generate certificates inside docker volume! If you want to add new certificates then use 'renew' instead of 'install'. Note: This example works in debug mode!
@@ -50,7 +50,7 @@ $ docker run --rm \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
-    blacklabelops/letsencrypt install
+    ckotte/letsencrypt install
 ~~~~
 
 > Will generate the certificates inside Docker volume. If you want to add new certificates then use 'renew' instead of 'install'.
@@ -64,7 +64,7 @@ $ docker run --rm \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Will renew the specified certificates on 15th at 1:15AM of each month.
@@ -94,7 +94,7 @@ $ docker run -d \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
     -e "LETSENCRYPT_DOMAIN2=www.quitschie.com" \
     -e "LETSENCRYPT_DOMAIN3=mydomain.squeeze.de" \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Will renew the certificate inside its volume /etc/letsencrypt/live/subdomain1.example.com
@@ -116,7 +116,7 @@ $ docker run -d \
     -e "LETSENCRYPT_HTTPS_ENABLED=false" \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Will renew the certificates inside its volume /etc/letsencrypt
@@ -131,7 +131,7 @@ $ docker run -d \
     -e "LETSENCRYPT_HTTP_ENABLED=false" \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Will renew the certificates inside its volume /etc/letsencrypt
@@ -155,7 +155,7 @@ $ docker run -d \
     -e "LETSENCRYPT_ACCOUNT_ID=YOUR_ACCOUNT_ID_HERE" \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Will renew the certificates inside its volume /etc/letsencrypt for the specific account.
@@ -178,7 +178,7 @@ $ docker run \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt install
+    ckotte/letsencrypt install
 ~~~~
 
 Example `newcert`:
@@ -190,7 +190,7 @@ $ docker run -it \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt newcert
+    ckotte/letsencrypt newcert
 ~~~~
 
 Example `renewal`:
@@ -202,7 +202,7 @@ $ docker run \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    blacklabelops/letsencrypt renewal
+    ckotte/letsencrypt renewal
 ~~~~
 
 # Additional Certbot Parameters
@@ -219,7 +219,7 @@ $ docker run --rm \
     -v letsencrypt_data:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
-    blacklabelops/letsencrypt install --expand
+    ckotte/letsencrypt install --expand
 ~~~~
 
 Example adding Certbot `--expand` parameter to periodic task:
@@ -232,7 +232,7 @@ $ docker run --rm \
     -v letsencrypt_data:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
-    blacklabelops/letsencrypt jobberd --expand
+    ckotte/letsencrypt jobberd --expand
 ~~~~
 
 # Letsencrypt and Nginx
@@ -264,7 +264,7 @@ $ docker run --rm \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=example.com" \
-    blacklabelops/letsencrypt install
+    ckotte/letsencrypt install
 ~~~~
 
 > This container will handshake with letsencrypt.org and an account and the certificate when successful.
@@ -293,7 +293,7 @@ $ docker run -d \
     -e "SERVER1CERTIFICATE_KEY=/etc/letsencrypt/live/example.com/privkey.pem" \
     -e "SERVER1CERTIFICATE_TRUSTED=/etc/letsencrypt/live/example.com/fullchain.pem" \
     --name nginx \
-    blacklabelops/nginx
+    ckotte/nginx
 ~~~~
 
 > LETSENCRYPT_CERTIFICATES switches on special configuration for Let's Encrypt certificates. E.g. in order to accept certificate challenges
@@ -308,7 +308,7 @@ $ docker run -d \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=example.com" \
     --name letsencrypt \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > This container will handshake with letsencrypt.org each month on the 15th and renewal the certificate when successful.
@@ -322,7 +322,7 @@ $ docker run -d \
     -e "JOB_COMMAND1=docker exec nginx nginx -s reload" \
     -e "JOB_TIME1=0 0 2 15 * *" \
     -e "JOB_ON_ERROR1=Continue" \
-    blacklabelops/jobber:docker
+    ckotte/jobber:docker
 ~~~~
 
 > Reloads Nginx configuration each month on the 15th over Docker without restarting Nginx! In order to achieve high availability!
@@ -341,7 +341,7 @@ $ docker run -d \
 		-e "LETSENCRYPT_CERTIFICATES_UID=1000" \
 		-e "LETSENCRYPT_CERTIFICATES_GID=1000" \
     --name letsencrypt \
-    blacklabelops/letsencrypt
+    ckotte/letsencrypt
 ~~~~
 
 > Changes ownership of all content in /etc/letsencrypt from root.root to 1000.1000 and file permissions of all private keys to user read only.
