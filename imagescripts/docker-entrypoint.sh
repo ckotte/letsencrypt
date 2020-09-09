@@ -1,9 +1,14 @@
-#!/bin/bash -x
+#!/bin/bash
+
 set -o errexit
 
-certbot_binary="/opt/certbot/certbot-auto"
+certbot_binary="/usr/bin/certbot"
 
-jobber_configfile="/root/.jobber"
+if [ "$EUID" -eq 0 ]; then
+  jobber_configfile="/root/.jobber"
+else
+  jobber_configfile="/home/$(whoami)/.jobber"
+fi
 
 letsencrypt_testcert=""
 
@@ -114,7 +119,7 @@ if [ "$1" = 'jobberd' ]; then
 _EOF_
 
   cat ${jobber_configfile}
-  exec jobberd
+  exec /usr/local/libexec/jobberrunner -u /usr/local/var/jobber/0/cmd.sock ${jobber_configfile}
 fi
 
 case "$1" in
