@@ -21,7 +21,7 @@ RUN if  [ "${CERTBOT_VERSION}" = "latest" ]; \
     rm -rf /var/log/*
 
 VOLUME ["/etc/letsencrypt"]
-EXPOSE 443 80
+EXPOSE 80
 
 # Image Metadata
 LABEL com.opencontainers.image.builddate.letsencrypt=${BUILD_DATE}

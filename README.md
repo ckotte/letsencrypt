@@ -24,7 +24,6 @@ In short, you can create and renew Let's Encrypt SSL certificates!
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -45,7 +44,6 @@ Example:
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -60,7 +58,6 @@ Now setup the container for monthly renewal!
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=www.example.com" \
@@ -87,7 +84,6 @@ Will result in:
 ~~~~
 $ docker run -d \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -98,43 +94,6 @@ $ docker run -d \
 ~~~~
 
 > Will renew the certificate inside its volume /etc/letsencrypt/live/subdomain1.example.com
-
-# Choosing between HTTP and HTTPS
-
-Let's Encrypt uses either HTTP port 80 or HTTPS port 443 for authenticating the domains.
-
-Choose according to the port which is free in your environment and disable the other with
-the environment variables HTTP_ENABLED and HTTPS_ENABLED. Both are true by default.
-
-Example using HTTP only:
-
-~~~~
-$ docker run -d \
-    -p 80:80 \
-    --name letsencrypt \
-    -v letsencrypt_certificates:/etc/letsencrypt \
-    -e "LETSENCRYPT_HTTPS_ENABLED=false" \
-    -e "LETSENCRYPT_EMAIL=dummy@example.com" \
-    -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    ckotte/letsencrypt
-~~~~
-
-> Will renew the certificates inside its volume /etc/letsencrypt
-
-Example using HTTPS only:
-
-~~~~
-$ docker run -d \
-    -p 443:443 \
-    --name letsencrypt \
-    -v letsencrypt_certificates:/etc/letsencrypt \
-    -e "LETSENCRYPT_HTTP_ENABLED=false" \
-    -e "LETSENCRYPT_EMAIL=dummy@example.com" \
-    -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
-    ckotte/letsencrypt
-~~~~
-
-> Will renew the certificates inside its volume /etc/letsencrypt
 
 # Multiple Accounts
 
@@ -151,7 +110,6 @@ $ docker run -d \
     -p 80:80 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
-    -e "LETSENCRYPT_HTTPS_ENABLED=false" \
     -e "LETSENCRYPT_ACCOUNT_ID=YOUR_ACCOUNT_ID_HERE" \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
@@ -173,7 +131,6 @@ Example `install`:
 ~~~~
 $ docker run \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -186,7 +143,6 @@ Example `newcert`:
 ~~~~
 $ docker run -it \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
@@ -198,7 +154,6 @@ Example `renewal`:
 ~~~~
 $ docker run \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_DOMAIN1=subdomain1.example.com" \
@@ -214,7 +169,6 @@ Example adding Certbot `--expand` parameter:
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_data:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -227,7 +181,6 @@ Example adding Certbot `--expand` parameter to periodic task:
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     --name letsencrypt \
     -v letsencrypt_data:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
@@ -260,7 +213,6 @@ Then start the letsencrypt container once and create the certificates.
 ~~~~
 $ docker run --rm \
     -p 80:80 \
-    -p 443:443 \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -e "LETSENCRYPT_EMAIL=dummy@example.com" \
     -e "LETSENCRYPT_DOMAIN1=example.com" \
@@ -279,7 +231,6 @@ Now you can use the certificate for your reverse proxy! The additional volume wi
 
 ~~~~
 $ docker run -d \
-    -p 443:443 \
     -p 80:80 \
     -v letsencrypt_certificates:/etc/letsencrypt \
     -v letsencrypt_challenges:/var/www/letsencrypt \

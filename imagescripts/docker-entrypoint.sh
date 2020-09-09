@@ -41,17 +41,6 @@ if  [ "${LETSENCRYPT_WEBROOT_MODE}" = "true" ]; then
   letsencrypt_challenge_mode="--webroot --webroot-path=/var/www/letsencrypt"
 fi
 
-letsencrypt_http_enabled="true"
-letsencrypt_https_enabled="true"
-
-if [ -n "${LETSENCRYP_HTTP_ENABLED}" ]; then
-  letsencrypt_http_enabled=${LETSENCRYP_HTTP_ENABLED}
-fi
-
-if [ -n "${LETSENCRYPT_HTTPS_ENABLED}" ]; then
-  letsencrypt_https_enabled=${LETSENCRYPT_HTTPS_ENABLED}
-fi
-
 letsencrypt_account_id=""
 
 if [ -n "${LETSENCRYPT_ACCOUNT_ID}" ]; then
