@@ -4,6 +4,11 @@ set -o errexit
 
 certbot_binary="/usr/bin/certbot"
 
+if [ "$EUID" -ne 0 ]; then
+  mkdir -p /home/jobber/.config/letsencrypt/
+  # config-dir remains /etc/letsencrypt
+  echo "work-dir=/home/jobber/.certbot/work" > /home/jobber/.config/letsencrypt/cli.ini
+  echo "logs-dir=/home/jobber/.certbot/logs" >> /home/jobber/.config/letsencrypt/cli.ini
 fi
 
 letsencrypt_testcert=""

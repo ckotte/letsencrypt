@@ -297,6 +297,27 @@ $ docker run -d \
 
 > Changes ownership of all content in /etc/letsencrypt from root.root to 1000.1000 and file permissions of all private keys to user read only.
 
+# Run the container as the jobber user
+
+You can run the container as the jobber user instead of root. The files in the config directory /etc/letsencrypt need to have the same UID and GID as the user. The log and working directories are changed to /home/jobber/.certbot/work and ../logs if the container isn't executed as root.
+Without those changes, certbot cannot write to the config, log and working directories.
+
+~~~~
+$ docker run -d \
+    -v letsencrypt_certificates:/etc/letsencrypt \
+    -v letsencrypt_challenges:/var/www/letsencrypt \
+    -e "LETSENCRYPT_WEBROOT_MODE=true" \
+    -e "LETSENCRYPT_EMAIL=dummy@example.com" \
+    -e "LETSENCRYPT_DOMAIN1=example.com" \
+		-e "LETSENCRYPT_CERTIFICATES_UID=1000" \
+		-e "LETSENCRYPT_CERTIFICATES_GID=1000" \
+    --user jobber:jobber \
+    --name letsencrypt \
+    ckotte/letsencrypt
+~~~~
+
+> Runs the container as the jobber user and changes ownership of all content in /etc/letsencrypt from root.root to 1000.1000.
+
 # References
 
 * [Let’s Encrypt](https://letsencrypt.org/)
