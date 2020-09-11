@@ -4,10 +4,6 @@ set -o errexit
 
 certbot_binary="/usr/bin/certbot"
 
-if [ "$EUID" -eq 0 ]; then
-  jobber_configfile="/root/.jobber"
-else
-  jobber_configfile="/home/$(whoami)/.jobber"
 fi
 
 letsencrypt_testcert=""
@@ -67,38 +63,27 @@ else
 	fi
 fi
 
-if [ ! -f "${jobber_configfile}" ]; then
-  touch ${jobber_configfile}
-fi
-
-cat > ${jobber_configfile} <<_EOF_
----
-_EOF_
-
-job_on_error="Continue"
-
-if [ -n "${LETSENCRYPT_JOB_ON_ERROR}" ]; then
-  job_on_error=${LETSENCRYPT_JOB_ON_ERROR}
-fi
-
-job_time="0 0 1 15 * *"
-
-if [ -n "${LETSENCRYPT_JOB_TIME}" ]; then
-  job_time=${LETSENCRYPT_JOB_TIME}
-fi
-
 if [ "$1" = 'jobberd' ]; then
-  cat >> ${jobber_configfile} <<_EOF_
-- name: letsencryt_renewal
-  cmd: bash -c "${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}"
-  time: ${job_time}
-  onError: ${job_on_error}
-  notifyOnError: false
-  notifyOnFailure: false
-_EOF_
+  export JOB_NAME1="letsencryt_renewal"
 
-  cat ${jobber_configfile}
-  exec /usr/local/libexec/jobberrunner -u /usr/local/var/jobber/0/cmd.sock ${jobber_configfile}
+  export JOB_COMMAND1="bash -c \"${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}\""
+
+  if [ -n "${LETSENCRYPT_JOB_TIME}" ]; then
+    export JOB_TIME1=${LETSENCRYPT_JOB_TIME}
+  else
+    export JOB_TIME1="0 0 1 15 * *"
+  fi
+
+  if [ -n "${LETSENCRYPT_JOB_ON_ERROR}" ]; then
+    export JOB_ON_ERROR1=${LETSENCRYPT_JOB_ON_ERROR}
+  else
+    export JOB_ON_ERROR1="Continue"
+  fi
+
+  # export JOB_NOTIFY_ERR1="false"
+  # export JOB_NOTIFY_FAIL1="false"
+
+  /opt/jobber/docker-entrypoint.sh "$@"
 fi
 
 case "$1" in
