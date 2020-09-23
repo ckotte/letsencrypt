@@ -85,8 +85,21 @@ if [ "$1" = 'jobberd' ]; then
     export JOB_ON_ERROR1="Continue"
   fi
 
-  # export JOB_NOTIFY_ERR1="false"
-  # export JOB_NOTIFY_FAIL1="false"
+  if [ -n "${LETSENCRYPT_JOB_NOTIFY_SUCC}" ]; then
+    export JOB_NOTIFY_SUCC1=${LETSENCRYPT_JOB_NOTIFY_SUCC}
+  else
+    export JOB_NOTIFY_SUCC1="false"
+  fi
+  if [ -n "${LETSENCRYPT_JOB_NOTIFY_ERR}" ]; then
+    export JOB_NOTIFY_ERR1=${LETSENCRYPT_JOB_NOTIFY_ERR}
+  else
+    export JOB_NOTIFY_ERR1="false"
+  fi
+  if [ -n "${LETSENCRYPT_JOB_NOTIFY_FAIL}" ]; then
+    export JOB_NOTIFY_FAIL1=${LETSENCRYPT_JOB_NOTIFY_FAIL}
+  else
+    export JOB_NOTIFY_FAIL1="false"
+  fi
 
   /opt/jobber/docker-entrypoint.sh "$@"
 fi

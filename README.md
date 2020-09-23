@@ -318,6 +318,39 @@ $ docker run -d \
 
 > Runs the container as the jobber user and changes ownership of all content in /etc/letsencrypt from root.root to 1000.1000.
 
+# Email notification
+
+You can add email notification on job success, error or failure:
+
+* LETSENCRYPT_JOB_NOTIFY_SUCC: If Jobber should send an email on job success. Values: `true`, `false`. Default is `false`.
+* LETSENCRYPT_JOB_NOTIFY_ERR: If Jobber should send an email on job error. Values: `true`, `false`. Default is `false`
+* LETSENCRYPT_JOB_NOTIFY_FAIL: If Jobber should send an email when the job status is set to `Failed`. Values: `true`, `false`. Default is `false`
+
+See [jobber-cron documentation](https://github.com/ckotte/jobber-cron/blob/master/README.md) for more information.
+
+~~~~
+$ docker run -d \
+    -v letsencrypt_certificates:/etc/letsencrypt \
+    -v letsencrypt_challenges:/var/www/letsencrypt \
+    -e "LETSENCRYPT_WEBROOT_MODE=true" \
+    -e "LETSENCRYPT_EMAIL=dummy@example.com" \
+    -e "LETSENCRYPT_DOMAIN1=example.com" \
+		-e "LETSENCRYPT_CERTIFICATES_UID=1000" \
+		-e "LETSENCRYPT_CERTIFICATES_GID=1000" \
+    -e "MAIL_SERVER=mail.gmx.net" \
+    -e "MAIL_SERVER_PORT=587" \
+    -e "MAIL_ADDRESS=some.email.address@gmx.de" \
+    -e "MAIL_PASSWORD=Secr3tPassw0rd" \
+    -e "LETSENCRYPT_JOB_NOTIFY_SUCC=false" \
+    -e "LETSENCRYPT_JOB_NOTIFY_ERR=true" \
+    -e "LETSENCRYPT_JOB_NOTIFY_FAIL=true" \
+    --user jobber:jobber \
+    --name letsencrypt \
+    ckotte/letsencrypt
+~~~~
+
+> Sends an email notification to the specified email address on job error and failure.
+
 # References
 
 * [Let’s Encrypt](https://letsencrypt.org/)
