@@ -69,7 +69,7 @@ else
 fi
 
 if [ "$1" = 'jobberd' ]; then
-  export JOB_NAME1="letsencryt_renewal"
+  export JOB_NAME1="letsencrypt_renewal"
 
   export JOB_COMMAND1="bash -c \"${certbot_binary} --text --non-interactive --no-bootstrap --no-self-upgrade certonly ${letsencrypt_challenge_mode} ${letsencrypt_testcert} ${letsencrypt_debug} --renew-by-default ${letsencrypt_account_id} ${letsencrypt_domains} ${@:2}\""
 
